@@ -7,18 +7,13 @@
 // settings.gradle.kts
 
 // build.gradle.kts (根项目)
-plugins {
-    // 声明但不应用插件
-    alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.compose) apply false
-    alias(libs.plugins.kotlin.kapt) apply false
-}
+//plugins {
+//    // 声明但不应用插件
+//    alias(libs.plugins.kotlin.android) apply false
+//    alias(libs.plugins.kotlin.compose) apply false
+//    alias(libs.plugins.kotlin.kapt) apply false
+//}
 
-subprojects {
-    // 对所有子项目应用插件
-//    apply(plugin = "kotlin-android")
-//    apply(plugin = "kotlin-kapt")
-}
 
 // 所有子模块共享的配置
 allprojects {

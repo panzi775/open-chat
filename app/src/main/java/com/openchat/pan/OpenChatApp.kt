@@ -5,6 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.tencent.imsdk.v2.V2TIMManager
 import com.tencent.imsdk.v2.V2TIMSDKConfig
+import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class OpenChatApp() : Application(), Parcelable {
