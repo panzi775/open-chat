@@ -3,7 +3,6 @@ package com.openchat.pan
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Chat
@@ -21,6 +20,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.openchat.pan.ui.page.ProfilePage
+import com.openchat.pan.ui.page.ChatPage
+import com.openchat.pan.ui.page.DynamicPage
 import com.openchat.pan.ui.theme.OpenChatTheme
 
 sealed class MainTab(val route: String, val label: String, val icon: ImageVector) {
@@ -84,24 +86,3 @@ fun BottomNavigationBar(navController: NavHostController) {
         }
     }
 }
-
-@Composable
-fun ChatPage() {
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Text("聊天页面", style = MaterialTheme.typography.headlineMedium)
-    }
-}
-
-@Composable
-fun DynamicPage() {
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Text("动态页面", style = MaterialTheme.typography.headlineMedium)
-    }
-}
-
-@Composable
-fun ProfilePage() {
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Text("我的页面", style = MaterialTheme.typography.headlineMedium)
-    }
-} 
