@@ -1,4 +1,4 @@
-package com.pan.open.chat.ui.theme
+package com.openchat.pan.ui.theme
 
 import android.app.Activity
 import android.os.Build

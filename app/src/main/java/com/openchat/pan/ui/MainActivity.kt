@@ -14,13 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.pan.open.chat.ui.theme.OpenChatTheme
+import com.openchat.pan.ui.theme.OpenChatTheme
 
 sealed class MainTab(val route: String, val label: String, val icon: ImageVector) {
     data object Chat : MainTab("chat", "聊天", Icons.AutoMirrored.Filled.Chat)
@@ -41,6 +42,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
