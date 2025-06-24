@@ -1,4 +1,4 @@
-package com.pan.open.chat
+package com.pan.open.chat.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

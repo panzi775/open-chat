@@ -27,7 +27,7 @@
         android:theme="@style/Theme.Open_chat"
         tools:targetApi="31">
         <activity
-            android:name="com.openchat.pan.MainActivity"
+            android:name="com.pan.open.chat.ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Open_chat">
