@@ -1,26 +1,22 @@
 package com.pan.open.chat.ui
 
 import android.os.Bundle
+import android.os.Build
+import android.view.WindowInsetsController
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.core.view.WindowCompat
 import com.pan.open.chat.ui.page.ProfilePage
 import com.pan.open.chat.ui.page.ChatPage
 import com.pan.open.chat.ui.page.DynamicPage
@@ -37,6 +33,15 @@ val mainTabs = listOf(MainTab.Chat, MainTab.Dynamic, MainTab.Profile)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 沉浸式状态栏
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.setSystemBarsAppearance(
+                0,
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+            )
+        }
         setContent {
             OpenChatTheme {
                 MainScreen()
@@ -48,50 +53,35 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun MainScreen() {
-    val navController = rememberNavController()
+    var selectedTab by remember { mutableStateOf<MainTab>(MainTab.Chat) }
     Scaffold(
+        modifier = Modifier.systemBarsPadding(),
         bottomBar = {
-            BottomNavigationBar(navController)
+            BottomNavigationBar(selectedTab) { selectedTab = it }
         }
     ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = MainTab.Chat.route,
+        androidx.compose.animation.Crossfade(
+            targetState = selectedTab,
             modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(MainTab.Chat.route) { KeepAlive { ChatPage() } }
-            composable(MainTab.Dynamic.route) { KeepAlive { DynamicPage() } }
-            composable(MainTab.Profile.route) { KeepAlive { ProfilePage() } }
+        ) { tab ->
+            when (tab) {
+                MainTab.Chat -> ChatPage()
+                MainTab.Dynamic -> DynamicPage()
+                MainTab.Profile -> ProfilePage()
+            }
         }
     }
 }
 
 @Composable
-fun KeepAlive(content: @Composable () -> Unit) {
-    // 只创建一次，避免重组时内容重建
-    val composableContent = remember { content }
-    composableContent()
-}
-
-@Composable
-fun BottomNavigationBar(navController: NavHostController) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+fun BottomNavigationBar(selectedTab: MainTab, onTabSelected: (MainTab) -> Unit) {
     NavigationBar {
         mainTabs.forEach { tab ->
             NavigationBarItem(
                 icon = { Icon(tab.icon, contentDescription = tab.label) },
                 label = { Text(tab.label) },
-                selected = currentRoute == tab.route,
-                onClick = {
-                    navController.navigate(tab.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
+                selected = selectedTab == tab,
+                onClick = { onTabSelected(tab) }
             )
         }
     }
